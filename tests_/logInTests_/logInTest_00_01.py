@@ -10,9 +10,15 @@ from pages_.logIn_.logInPage import LogInPage
 from pages_.navigationBar_.navigationBar import NavigationBar
 
 
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+from common_.utilities_.customListener import MyListener
+
+
+
 class TestLogIn(unittest.TestCase):
     def setUp(self) -> None:
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        self.simpleDriver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        self.driver = EventFiringWebDriver(self.simpleDriver, MyListener())
         self.driver.delete_all_cookies()
         self.driver.implicitly_wait(10)
         self.driver.maximize_window()

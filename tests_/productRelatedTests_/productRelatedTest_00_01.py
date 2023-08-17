@@ -13,16 +13,19 @@ from pages_.productsRelatedPages_.searchResultPage import SearchResultPage
 from pages_.productsRelatedPages_.productDetailsPage import ProductDetailsPage
 
 
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+from common_.utilities_.customListener import MyListener
+
 class ProductRelatedTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        self.simpleDriver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+        self.driver = EventFiringWebDriver(self.simpleDriver, MyListener())
         self.driver.delete_all_cookies()
         self.driver.implicitly_wait(10)
         self.driver.maximize_window()
         self.driver.get(testData.urlSignIn)
         loginPageObj = LogInPage(self.driver)
         loginPageObj.quick_log_in()
-
 
 
     def test_search_product_and_add_to_cart(self):
